@@ -17,7 +17,7 @@ databaseChangeLog:
                   name: from_account_id
                   type: int
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: to_account_id
                   type: int

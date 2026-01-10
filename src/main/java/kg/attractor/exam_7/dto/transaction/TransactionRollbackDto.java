@@ -1,6 +1,7 @@
-package kg.attractor.exam_7.dto;
+package kg.attractor.exam_7.dto.transaction;
 
 import jakarta.validation.constraints.NotNull;
+import kg.attractor.exam_7.dto.UserDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public class TransactionRollbackDto {
     private Integer id;
 
     @NotNull(message = "Транзакция обязательна")
-    private TransactionDto transaction;
+    private TransactionDetailDto transaction;
 
     @NotNull(message = "Пользователь, отменивший транзакцию, обязателен")
     private UserDto rolledBackBy;

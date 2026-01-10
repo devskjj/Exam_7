@@ -2,10 +2,10 @@ package kg.attractor.exam_7.service.impl;
 
 import kg.attractor.exam_7.dao.AccountDao;
 import kg.attractor.exam_7.dao.TransactionDao;
-import kg.attractor.exam_7.dto.AccountDto;
-import kg.attractor.exam_7.dto.TransactionRequest;
-import kg.attractor.exam_7.dto.TransactionDisplayDto;
-import kg.attractor.exam_7.dto.TransactionDto;
+import kg.attractor.exam_7.dto.account.AccountDto;
+import kg.attractor.exam_7.dto.transaction.TransactionRequestDto;
+import kg.attractor.exam_7.dto.transaction.TransactionViewDto;
+import kg.attractor.exam_7.dto.transaction.TransactionDetailDto;
 import kg.attractor.exam_7.exception.AccessDeniedException;
 import kg.attractor.exam_7.exception.AccountNotFoundException;
 import kg.attractor.exam_7.service.ExchangeRateService;
@@ -30,7 +30,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional
     @Override
-    public void makeTransaction(TransactionRequest request, String username) {
+    public void makeTransaction(TransactionRequestDto request, String username) {
         String fromAccNum = request.getFromAccountNumber();
         String toAccNum = request.getToAccountNumber();
         BigDecimal amount = request.getAmount();
@@ -68,7 +68,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        TransactionDto transaction = TransactionDto.builder()
+        TransactionDetailDto transaction = TransactionDetailDto.builder()
                 .fromAccount(from)
                 .toAccount(to)
                 .currency(to.getCurrency())
@@ -92,7 +92,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
-    public List<TransactionDisplayDto> getAccountHistory(Integer accountId) {
+    public List<TransactionViewDto> getAccountHistory(Integer accountId) {
         AccountDto account = accountDao.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException(String.valueOf(accountId)));
 

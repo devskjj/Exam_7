@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,14 +26,14 @@ public class AccountDao {
 
     public Integer create(AccountDto dto) {
         String sql = """
-                    INSERT INTO accounts(user_id, account_number, currency_id, balance, created_at)
-                    VALUES (?, ?, ?, ?, ?)
-                    """;
+                INSERT INTO accounts(user_id, account_number, currency_id, balance, created_at)
+                VALUES (?, ?, ?, ?, ?)
+                """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
 
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
             ps.setLong(1, dto.getUser().getId());
             ps.setString(2, dto.getAccountNumber());
             ps.setInt(3, dto.getCurrency().getId());
@@ -41,7 +42,12 @@ public class AccountDao {
             return ps;
         }, keyHolder);
 
-        return Objects.requireNonNull(keyHolder.getKey()).intValue();
+        Map<String, Object> keys = keyHolder.getKeys();
+        if (keys != null && keys.containsKey("id")) {
+            return ((Number) keys.get("id")).intValue();
+        }
+
+        return (Integer) Objects.requireNonNull(keyHolder.getKeys().get("ID"));
     }
 
     public Optional<AccountDto> findByAccountNumber(String number) {

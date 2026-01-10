@@ -1,8 +1,8 @@
 package kg.attractor.exam_7.controller;
 
 import jakarta.validation.Valid;
-import kg.attractor.exam_7.dto.TransactionRequest;
-import kg.attractor.exam_7.dto.TransactionDisplayDto;
+import kg.attractor.exam_7.dto.transaction.TransactionRequestDto;
+import kg.attractor.exam_7.dto.transaction.TransactionViewDto;
 import kg.attractor.exam_7.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,13 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping("/{accountId}/history")
-    public ResponseEntity<List<TransactionDisplayDto>> getTransactionHistory(@PathVariable Integer accountId) {
+    public ResponseEntity<List<TransactionViewDto>> getTransactionHistory(@PathVariable Integer accountId) {
         return ResponseEntity.ok(transactionService.getAccountHistory(accountId));
     }
 
     @PostMapping
-    public ResponseEntity<String> makeTransaction(@RequestBody @Valid TransactionRequest request, Authentication authentication) {
+    public ResponseEntity<String> makeTransaction(@RequestBody @Valid TransactionRequestDto request, Authentication authentication) {
         transactionService.makeTransaction(request, authentication.getName());
         return ResponseEntity.ok("Transaction was successful");
     }
-
 }
