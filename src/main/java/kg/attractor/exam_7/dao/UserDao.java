@@ -1,7 +1,5 @@
 package kg.attractor.exam_7.dao;
 
-
-import kg.attractor.exam_7.dto.UserDto;
 import kg.attractor.exam_7.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
@@ -21,17 +19,17 @@ import java.util.Optional;
 public class UserDao {
     private final JdbcTemplate jdbcTemplate;
 
-    public Integer register(UserDto userDto) {
+    public Integer register(User user) {
         String sql = """
-                INSERT INTO users (username, password, phone_number, enabled, authority_id)
+                INSERT INTO users (username, password, phone_number, enabled, role_id)
                 VALUES (?, ?, ?, true, (SELECT id FROM roles WHERE role = 'USER'))
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, userDto.getUsername());
-            ps.setString(2, userDto.getPassword());
-            ps.setString(3, userDto.getPhoneNumber());
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getPhoneNumber());
             return ps;
         }, keyHolder);
 

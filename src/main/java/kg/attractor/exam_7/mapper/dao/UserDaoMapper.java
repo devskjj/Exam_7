@@ -1,4 +1,4 @@
-package kg.attractor.exam_7.mapper;
+package kg.attractor.exam_7.mapper.dao;
 
 import kg.attractor.exam_7.model.User;
 import org.springframework.jdbc.core.RowMapper;

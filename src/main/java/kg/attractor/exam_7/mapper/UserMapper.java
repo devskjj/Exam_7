@@ -1,4 +1,4 @@
-package kg.attractor.exam_7.mapper.interfaces;
+package kg.attractor.exam_7.mapper;
 
 import kg.attractor.exam_7.dto.UserDto;
 import kg.attractor.exam_7.model.User;

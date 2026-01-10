@@ -11,7 +11,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("")
+                        .title("Payment System")
                         .version("1.0.0")
                 );
     }
