@@ -10,10 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateAccountDto {
+public class CurrencyDto {
+    private Integer id;
+
     @NotBlank(message = "Код валюты обязателен")
     @Size(min = 3, max = 3, message = "Код валюты должен состоять из 3 символов")
-    @Pattern(regexp = "^(USD|EUR|KGS)$", message = "Допустимые коды валют - USD, EUR, KGS")
-    private String currencyCode;
+    @Pattern(regexp = "^[A-Z]{3}$", message = "Код валюты должен содержать только заглавные буквы")
+    private String code;
 }
-

@@ -4,5 +4,5 @@ import jakarta.validation.Valid;
 import kg.attractor.exam_7.dto.CreateAccountDto;
 
 public interface AccountService {
-    void createAccount(CreateAccountDto accountDto);
+    Integer createAccount(CreateAccountDto accountDto);
 }
