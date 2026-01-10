@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-add-foreign-keys
+      author: Denis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            constraintName: fk_user_role
+
+        - addForeignKeyConstraint:
+            baseTableName: accounts
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_account_user
+
+        - addForeignKeyConstraint:
+            baseTableName: accounts
+            baseColumnNames: currency_id
+            referencedTableName: currencies
+            referencedColumnNames: id
+            constraintName: fk_account_currency
+
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: from_account_id
+            referencedTableName: accounts
+            referencedColumnNames: id
+            constraintName: fk_transaction_from_account
+
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: to_account_id
+            referencedTableName: accounts
+            referencedColumnNames: id
+            constraintName: fk_transaction_to_account
+
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: currency_id
+            referencedTableName: currencies
+            referencedColumnNames: id
+            constraintName: fk_transaction_currency
+
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: approved_by
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_transaction_approved_by
+
+        - addForeignKeyConstraint:
+            baseTableName: transaction_rollbacks
+            baseColumnNames: transaction_id
+            referencedTableName: transactions
+            referencedColumnNames: id
+            constraintName: fk_rollback_transaction
+
+        - addForeignKeyConstraint:
+            baseTableName: transaction_rollbacks
+            baseColumnNames: rolled_back_by
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_rollback_user
