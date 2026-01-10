@@ -1,8 +1,8 @@
 package kg.attractor.exam_7.service;
 
-import kg.attractor.exam_7.dto.CreateAccountDto;
+import kg.attractor.exam_7.dto.account.CreateAccountDto;
 import kg.attractor.exam_7.dto.DepositRequestDto;
-import kg.attractor.exam_7.dto.AccountResponse;
+import kg.attractor.exam_7.dto.account.AccountResponseDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -10,10 +10,10 @@ import java.util.List;
 public interface AccountService {
     Integer createAccount(CreateAccountDto accountDto);
 
-    AccountResponse getBalance(String accountNumber);
+    AccountResponseDto getBalance(String accountNumber);
 
-    List<AccountResponse> getUserAccounts();
+    List<AccountResponseDto> getUserAccounts();
 
     @Transactional
-    AccountResponse depositToAccount(DepositRequestDto request);
+    AccountResponseDto depositToAccount(DepositRequestDto request);
 }

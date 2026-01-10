@@ -1,4 +1,4 @@
-package kg.attractor.exam_7.dto;
+package kg.attractor.exam_7.dto.account;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

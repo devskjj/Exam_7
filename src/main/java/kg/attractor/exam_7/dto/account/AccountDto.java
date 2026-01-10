@@ -1,9 +1,11 @@
-package kg.attractor.exam_7.dto;
+package kg.attractor.exam_7.dto.account;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import kg.attractor.exam_7.dto.CurrencyDto;
+import kg.attractor.exam_7.dto.UserDto;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -21,7 +23,7 @@ public class AccountDto {
     private UserDto user;
 
     @NotBlank(message = "Номер счета обязателен")
-    @Size(max = 36, message = "Номер счета должен содержать от 10 до 20 символов")
+    @Size(max = 36, message = "Номер счета должен содержать до 36 символов")
     private String accountNumber;
 
     @NotNull(message = "Валюта обязательна")

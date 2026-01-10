@@ -2,9 +2,9 @@ package kg.attractor.exam_7.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import kg.attractor.exam_7.dto.CreateAccountDto;
+import kg.attractor.exam_7.dto.account.CreateAccountDto;
 import kg.attractor.exam_7.dto.DepositRequestDto;
-import kg.attractor.exam_7.dto.AccountResponse;
+import kg.attractor.exam_7.dto.account.AccountResponseDto;
 import kg.attractor.exam_7.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,18 +26,17 @@ public class AccountController {
     }
 
     @GetMapping("/balance")
-    public ResponseEntity<AccountResponse> getBalance(@RequestParam @NotBlank String accountNumber) {
+    public ResponseEntity<AccountResponseDto> getBalance(@RequestParam @NotBlank String accountNumber) {
         return ResponseEntity.ok(accountService.getBalance(accountNumber));
     }
 
     @PostMapping("/balance")
-    public ResponseEntity<AccountResponse> depositToAccount(@Valid @RequestBody DepositRequestDto request) {
+    public ResponseEntity<AccountResponseDto> depositToAccount(@Valid @RequestBody DepositRequestDto request) {
         return ResponseEntity.ok(accountService.depositToAccount(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<AccountResponse>> getUserAccounts() {
+    public ResponseEntity<List<AccountResponseDto>> getUserAccounts() {
         return ResponseEntity.ok(accountService.getUserAccounts());
     }
-
 }

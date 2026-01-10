@@ -4,6 +4,10 @@ import kg.attractor.exam_7.dao.AccountDao;
 import kg.attractor.exam_7.dao.CurrencyDao;
 import kg.attractor.exam_7.dao.TransactionDao;
 import kg.attractor.exam_7.dto.*;
+import kg.attractor.exam_7.dto.account.AccountDto;
+import kg.attractor.exam_7.dto.account.AccountResponseDto;
+import kg.attractor.exam_7.dto.account.CreateAccountDto;
+import kg.attractor.exam_7.dto.transaction.TransactionDetailDto;
 import kg.attractor.exam_7.service.AccountService;
 import kg.attractor.exam_7.util.AuthAdapter;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponse getBalance(String accountNumber) {
+    public AccountResponseDto getBalance(String accountNumber) {
         AccountDto account = accountDao.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new RuntimeException("Счет не найден"));
 
@@ -68,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("Нет доступа к этому счету");
         }
 
-        return AccountResponse.builder()
+        return AccountResponseDto.builder()
                 .id(account.getId())
                 .accountNumber(account.getAccountNumber())
                 .currency(account.getCurrency().getCode())
@@ -77,10 +81,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountResponse> getUserAccounts() {
+    public List<AccountResponseDto> getUserAccounts() {
         Integer userId = authAdapter.getAuthId();
         return accountDao.findAllByUserId(userId).stream()
-                .map(account -> AccountResponse.builder()
+                .map(account -> AccountResponseDto.builder()
                         .id(account.getId())
                         .accountNumber(account.getAccountNumber())
                         .currency(account.getCurrency().getCode())
@@ -91,7 +95,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public AccountResponse depositToAccount(DepositRequestDto request) {
+    public AccountResponseDto depositToAccount(DepositRequestDto request) {
         UserDto currentUser = authAdapter.getAuthUser();
 
         AccountDto account = accountDao.findByAccountNumber(request.getAccountNumber())
@@ -105,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
         accountDao.updateBalance(account.getId(), newBalance);
 
 
-        TransactionDto transaction = TransactionDto.builder()
+        TransactionDetailDto transaction = TransactionDetailDto.builder()
                 .fromAccount(null)
                 .toAccount(AccountDto.builder()
                         .id(account.getId())
@@ -123,7 +127,7 @@ public class AccountServiceImpl implements AccountService {
 
         transactionDao.create(transaction);
 
-        return AccountResponse.builder()
+        return AccountResponseDto.builder()
                 .id(account.getId())
                 .accountNumber(account.getAccountNumber())
                 .currency(account.getCurrency().getCode())

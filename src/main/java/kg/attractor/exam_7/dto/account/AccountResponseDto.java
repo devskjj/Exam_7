@@ -1,4 +1,4 @@
-package kg.attractor.exam_7.dto;
+package kg.attractor.exam_7.dto.account;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountResponse {
+public class AccountResponseDto {
     private Integer id;
     private String accountNumber;
     private String currency;
