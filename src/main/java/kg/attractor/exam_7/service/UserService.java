@@ -7,4 +7,8 @@ public interface UserService {
     Integer register(UserDto userDto);
 
     void validateUser(UserDto userDto);
+
+    UserDto getUserByPhoneNumber(String name);
+
+    UserDto getUserById(Integer userId);
 }

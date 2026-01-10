@@ -11,6 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class UserDto {
+    private Integer id;
+
     @NotBlank(message = "Имя пользователя обязательно")
     @Size(max = 55, message = "Имя пользователя должно содержать до 55 символов.")
     private String username;
