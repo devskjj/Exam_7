@@ -4,7 +4,7 @@ import kg.attractor.exam_7.dao.UserDao;
 import kg.attractor.exam_7.dto.UserDto;
 import kg.attractor.exam_7.exception.InvalidUserDataException;
 import kg.attractor.exam_7.exception.UserNotFoundException;
-import kg.attractor.exam_7.mapper.UserMapper;
+import kg.attractor.exam_7.mapper.interfaces.UserMapper;
 import kg.attractor.exam_7.model.User;
 import kg.attractor.exam_7.service.UserService;
 import lombok.RequiredArgsConstructor;
