@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-users-table
+      author: Denis
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: username
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: boolean
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false

@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-create-rollbacks-table
+      author: Denis
+      changes:
+        - createTable:
+            tableName: transaction_rollbacks
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: transaction_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rolled_back_by
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false

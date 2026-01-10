@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-create-transactions-table
+      author: Denis
+      changes:
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: from_account_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: to_account_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: amount
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(20)
+                  defaultValue: "PENDING"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: requires_approval
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: approved_by
+                  type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: transaction_type
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
