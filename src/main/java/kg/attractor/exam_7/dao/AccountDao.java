@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -56,7 +57,7 @@ public class AccountDao {
         return jdbcTemplate.query(sql, accountMapper, number).stream().findFirst();
     }
 
-    public List<AccountDto> findAllByUserId(int userId) {
+    public List<AccountDto> findAllByUserId(Integer userId) {
         String sql = """
             SELECT a.id, a.user_id, a.account_number, a.currency_id, a.balance, a.created_at,
             c.code AS currency_code,
@@ -69,11 +70,11 @@ public class AccountDao {
         return jdbcTemplate.query(sql, accountMapper, userId);
     }
 
-    public void updateBalance(int accountId, float newBalance) {
+    public void updateBalance(Integer accountId, BigDecimal newBalance) {
         jdbcTemplate.update("UPDATE accounts SET balance = ? WHERE id = ?", newBalance, accountId);
     }
 
-    public Optional<AccountDto> findById(int id) {
+    public Optional<AccountDto> findById(Integer id) {
         String sql = """
             SELECT a.*, c.code AS currency_code, u.id AS user_id, u.username, u.phone_number
             FROM accounts a

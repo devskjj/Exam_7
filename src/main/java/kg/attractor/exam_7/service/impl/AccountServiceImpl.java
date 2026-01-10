@@ -2,15 +2,14 @@ package kg.attractor.exam_7.service.impl;
 
 import kg.attractor.exam_7.dao.AccountDao;
 import kg.attractor.exam_7.dao.CurrencyDao;
-import kg.attractor.exam_7.dto.AccountDto;
-import kg.attractor.exam_7.dto.CreateAccountDto;
-import kg.attractor.exam_7.dto.CurrencyDto;
-import kg.attractor.exam_7.dto.UserDto;
+import kg.attractor.exam_7.dao.TransactionDao;
+import kg.attractor.exam_7.dto.*;
 import kg.attractor.exam_7.service.AccountService;
 import kg.attractor.exam_7.util.AuthAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,6 +23,7 @@ public class AccountServiceImpl implements AccountService {
     private final AuthAdapter authAdapter;
     private final AccountDao accountDao;
     private final CurrencyDao currencyDao;
+    private final TransactionDao transactionDao;
 
     @Override
     public Integer createAccount(CreateAccountDto accountDto) {
@@ -57,5 +57,77 @@ public class AccountServiceImpl implements AccountService {
                 .build();
 
         return accountDao.create(newAccount);
+    }
+
+    @Override
+    public AccountResponse getBalance(String accountNumber) {
+        AccountDto account = accountDao.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Счет не найден"));
+
+        if (!account.getUser().getId().equals(authAdapter.getAuthId())) {
+            throw new RuntimeException("Нет доступа к этому счету");
+        }
+
+        return AccountResponse.builder()
+                .id(account.getId())
+                .accountNumber(account.getAccountNumber())
+                .currency(account.getCurrency().getCode())
+                .balance(account.getBalance())
+                .build();
+    }
+
+    @Override
+    public List<AccountResponse> getUserAccounts() {
+        Integer userId = authAdapter.getAuthId();
+        return accountDao.findAllByUserId(userId).stream()
+                .map(account -> AccountResponse.builder()
+                        .id(account.getId())
+                        .accountNumber(account.getAccountNumber())
+                        .currency(account.getCurrency().getCode())
+                        .balance(account.getBalance())
+                        .build())
+                .toList();
+    }
+
+    @Transactional
+    @Override
+    public AccountResponse depositToAccount(DepositRequestDto request) {
+        UserDto currentUser = authAdapter.getAuthUser();
+
+        AccountDto account = accountDao.findByAccountNumber(request.getAccountNumber())
+                .orElseThrow(() -> new RuntimeException("Счет не найден"));
+
+        if (!account.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("Нельзя пополнять чужие счета");
+        }
+
+        BigDecimal newBalance = account.getBalance().add(request.getAmount());
+        accountDao.updateBalance(account.getId(), newBalance);
+
+
+        TransactionDto transaction = TransactionDto.builder()
+                .fromAccount(null)
+                .toAccount(AccountDto.builder()
+                        .id(account.getId())
+                        .accountNumber(account.getAccountNumber())
+                        .build())
+                .amount(request.getAmount())
+                .currency(account.getCurrency())
+                .status("COMPLETED")
+                .approved(true)
+                .approvedBy(currentUser)
+                .transactionType("DEPOSIT")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        transactionDao.create(transaction);
+
+        return AccountResponse.builder()
+                .id(account.getId())
+                .accountNumber(account.getAccountNumber())
+                .currency(account.getCurrency().getCode())
+                .balance(newBalance)
+                .build();
     }
 }
