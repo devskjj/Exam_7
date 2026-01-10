@@ -1,4 +1,4 @@
-package kg.attractor.exam_7.dto;
+package kg.attractor.exam_7.dto.transaction;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TransactionRequest {
+public class TransactionRequestDto {
     @NotBlank(message = "Номер счета отправителя обязателен")
     private String fromAccountNumber;
 

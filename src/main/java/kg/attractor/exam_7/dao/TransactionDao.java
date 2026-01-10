@@ -1,11 +1,11 @@
 package kg.attractor.exam_7.dao;
 
-import kg.attractor.exam_7.dto.TransactionDisplayDto;
-import kg.attractor.exam_7.dto.TransactionDto;
-import kg.attractor.exam_7.dto.TransactionRollbackDto;
-import kg.attractor.exam_7.mapper.TransactionDaoMapper;
-import kg.attractor.exam_7.mapper.TransactionDtoMapper;
-import kg.attractor.exam_7.mapper.TransactionRollbackDaoMapper;
+import kg.attractor.exam_7.dto.transaction.TransactionViewDto;
+import kg.attractor.exam_7.dto.transaction.TransactionDetailDto;
+import kg.attractor.exam_7.dto.transaction.TransactionRollbackDto;
+import kg.attractor.exam_7.mapper.dao.TransactionDaoMapper;
+import kg.attractor.exam_7.mapper.dao.TransactionDtoMapper;
+import kg.attractor.exam_7.mapper.dao.TransactionRollbackDaoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +22,7 @@ public class TransactionDao {
     private final TransactionDaoMapper transactionMapper;
     private final TransactionRollbackDaoMapper transactionRollbackDaoMapper;
 
-    public void create(TransactionDto dto) {
+    public void create(TransactionDetailDto dto) {
         jdbcTemplate.update("""
                             INSERT INTO transactions(
                                 from_account_id, 
@@ -43,14 +43,14 @@ public class TransactionDao {
                 dto.getAmount(),
                 dto.getCurrency().getId(),
                 dto.getStatus(),
-                dto.getTransactionType(),
                 dto.getApproved(),
                 dto.getApprovedBy() != null ? dto.getApprovedBy().getId() : null,
+                dto.getTransactionType(),
                 dto.getCreatedAt(),
                 dto.getUpdatedAt());
     }
 
-    public void update(TransactionDto dto) {
+    public void update(TransactionDetailDto dto) {
         jdbcTemplate.update("""
                             UPDATE transactions
                             SET status = ?,
@@ -64,7 +64,7 @@ public class TransactionDao {
                 dto.getId());
     }
 
-    public List<TransactionDisplayDto> findHistoryByAccountId(Integer accountId) {
+    public List<TransactionViewDto> findHistoryByAccountId(Integer accountId) {
         String sql = """
                     SELECT t.id, t.from_account_id, t.to_account_id, t.amount, 
                            c.code AS currency_code, t.status, t.approved,
@@ -77,7 +77,7 @@ public class TransactionDao {
         return jdbcTemplate.query(sql, transactionMapper, accountId, accountId);
     }
 
-    public List<TransactionDisplayDto> findAll() {
+    public List<TransactionViewDto> findAll() {
         String sql = """
                     SELECT t.id, t.from_account_id, t.to_account_id, t.amount, 
                            c.code AS currency_code, t.status, t.approved,
@@ -89,7 +89,7 @@ public class TransactionDao {
         return jdbcTemplate.query(sql, transactionMapper);
     }
 
-    public List<TransactionDisplayDto> findByRequiresApproval(boolean requiresApproval) {
+    public List<TransactionViewDto> findByRequiresApproval(boolean requiresApproval) {
         String sql = """
                     SELECT t.id, t.from_account_id, t.to_account_id, t.amount,
                            c.code AS currency_code, t.status, t.approved,
@@ -102,7 +102,7 @@ public class TransactionDao {
         return jdbcTemplate.query(sql, transactionMapper, requiresApproval);
     }
 
-    public Optional<TransactionDto> findDtoById(Integer id) {
+    public Optional<TransactionDetailDto> findDtoById(Integer id) {
         String sql = """
                     SELECT t.id, t.from_account_id, t.to_account_id, t.amount, 
                            t.currency_id, t.status, t.approved,

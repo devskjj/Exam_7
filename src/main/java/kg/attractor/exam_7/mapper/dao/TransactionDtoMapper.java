@@ -1,8 +1,8 @@
-package kg.attractor.exam_7.mapper;
+package kg.attractor.exam_7.mapper.dao;
 
-import kg.attractor.exam_7.dto.AccountDto;
+import kg.attractor.exam_7.dto.account.AccountDto;
 import kg.attractor.exam_7.dto.CurrencyDto;
-import kg.attractor.exam_7.dto.TransactionDto;
+import kg.attractor.exam_7.dto.transaction.TransactionDetailDto;
 import kg.attractor.exam_7.dto.UserDto;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -11,10 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class TransactionDtoMapper implements RowMapper<TransactionDto> {
+public class TransactionDtoMapper implements RowMapper<TransactionDetailDto> {
     @Override
-    public TransactionDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return TransactionDto.builder()
+    public TransactionDetailDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return TransactionDetailDto.builder()
                 .id(rs.getInt("id"))
                 .fromAccount(rs.getObject("from_account_id") != null ?
                         AccountDto.builder().id(rs.getInt("from_account_id")).build() : null)

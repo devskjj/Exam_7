@@ -1,4 +1,4 @@
-package kg.attractor.exam_7.dto;
+package kg.attractor.exam_7.dto.transaction;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor()
 @NoArgsConstructor
 @Builder
-public class TransactionDisplayDto {
+public class TransactionViewDto {
     private Integer id;
     private Integer fromAccount;
     private Integer toAccount;

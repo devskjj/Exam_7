@@ -1,6 +1,6 @@
-package kg.attractor.exam_7.mapper;
+package kg.attractor.exam_7.mapper.dao;
 
-import kg.attractor.exam_7.dto.TransactionDisplayDto;
+import kg.attractor.exam_7.dto.transaction.TransactionViewDto;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -9,10 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class TransactionDaoMapper implements RowMapper<TransactionDisplayDto> {
+public class TransactionDaoMapper implements RowMapper<TransactionViewDto> {
     @Override
-    public TransactionDisplayDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return TransactionDisplayDto.builder()
+    public TransactionViewDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return TransactionViewDto.builder()
                 .id(rs.getInt("id"))
                 .fromAccount(rs.getObject("from_account_id") != null ?
                         rs.getInt("from_account_id") : null)
