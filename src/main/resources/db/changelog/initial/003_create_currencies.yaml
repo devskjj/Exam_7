@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-currencies-table
+      author: Denis
+      changes:
+        - createTable:
+            tableName: currencies
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+                    unique: true
